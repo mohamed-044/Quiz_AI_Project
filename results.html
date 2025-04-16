@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Résultats du Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main>
+    <h1>Résultats du Quiz</h1>
+
+    <section id="score-section">
+      <p id="final-score">Votre score : 0/10</p>
+    </section>
+
+    <section id="corrections-section">
+      <h2>Correction</h2>
+      <div id="results-list">
+        <!-- Résultats question par question insérés ici dynamiquement -->
+      </div>
+    </section>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="window.location.href='index.html'">Recommencer un quiz</button>
+    </div>
+  </main>
+
+  <script src="results.js"></script>
+</body>
+</html>
