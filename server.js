@@ -19,15 +19,21 @@ app.post('/generate-quiz', async (req, res) => {
   }
 
   const prompt = `
-    Crée un quiz de ${questionCount} questions sur le thème "${theme}".
-    La difficulté est "${difficulty}". 
-    Pour chaque question, fournis : 
-    - l'énoncé,
-    - 4 propositions de réponses (A à D),
-    - et la bonne réponse indiquée à part.
+  Génère un quiz JSON contenant ${questionCount} questions sur le thème "${theme}", difficulté "${difficulty}".
+  Chaque question doit être un objet avec :
+  - "question": le texte de la question
+  - "choices": un tableau avec 4 réponses possibles
+  - "answer": la bonne réponse (le texte exact)
 
-    Le tout doit être structuré et lisible.
-  `;
+  Exemple :
+  [
+    {
+      "question": "Quel est le capital de la France ?",
+      "choices": ["Lyon", "Paris", "Marseille", "Toulouse"],
+      "answer": "Paris"
+    }
+  ]
+`;
 
   try {
     const response = await axios.post(
