@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>QUIZ</h1>
+
+    <section id="quiz-container">
+      <h2>Questions</h2>
+
+      <div id="question-meta">
+        <p id="question-number">Question 1/10</p>
+      </div>
+
+      <div id="question-text">
+        <p id="question-content">Chargement de la question...</p>
+      </div>
+
+      <form id="answers-form">
+        <!-- Les propositions de réponse seront insérées ici dynamiquement -->
+      </form>
+
+      <div class="quiz-buttons">
+        <button id="skip-btn" type="button">Sauter la question</button>
+        <button id="validate-btn" type="submit">Valider</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="quiz.js"></script>
+</body>
+</html>
