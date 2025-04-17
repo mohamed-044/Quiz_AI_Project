@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Résultats du Quiz</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .result-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
+
+    .answer-block {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
   <main>
@@ -17,15 +40,15 @@
     <section id="corrections-section">
       <h2>Correction</h2>
       <div id="results-list">
-        <!-- Résultats question par question insérés ici dynamiquement -->
+        <!-- Résultats question par question seront insérés ici -->
       </div>
     </section>
 
     <div style="text-align: center; margin-top: 30px;">
-      <button onclick="window.location.href='index.html'">Recommencer un quiz</button>
+      <button onclick="window.location.href='index.html'">🔁 Recommencer un quiz</button>
     </div>
   </main>
 
-  <script src="results.js"></script>
+  <script type="module" src="results.js"></script>
 </body>
 </html>
