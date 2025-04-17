@@ -11,6 +11,11 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+// Route de health check
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Le serveur est en cours d\'exécution' });
+});
+
 app.post('/generate-quiz', async (req, res) => {
   const { theme, difficulty, questionCount } = req.body;
 
