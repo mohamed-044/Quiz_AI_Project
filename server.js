@@ -53,7 +53,11 @@ app.post('/generate-quiz', async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
+<<<<<<< HEAD
         model: 'gpt-4',
+=======
+        model: 'gpt-3.5-turbo',
+>>>>>>> origin/develop
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 2000
@@ -74,6 +78,7 @@ app.post('/generate-quiz', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 app.post('/translate', async (req, res) => {
   console.log('Requête reçue pour traduction');
   const { text, targetLang } = req.body;
@@ -117,4 +122,8 @@ app.post('/translate', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`✅ Serveur backend sur : http://localhost:${PORT}`);
+=======
+app.listen(PORT, () => {
+  console.log(`✅ Serveur backend lancé sur http://localhost:${PORT}`);
+>>>>>>> origin/develop
 });

@@ -5,6 +5,7 @@
   padding: 0;
 }
 
+/* Thème clair par défaut */
 body {
   font-family: Arial, sans-serif;
   background-color: #f7f7f7;
@@ -12,6 +13,13 @@ body {
   padding: 20px;
 }
 
+/* Appliqué uniquement si body a .light */
+body.light {
+  background-color: #ffffff;
+  color: #121212;
+}
+
+/* Bloc principal */
 main {
   max-width: 800px;
   margin: 50px auto;
@@ -19,8 +27,16 @@ main {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Thème sombre appliqué à main */
+main.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Titres */
 h1 {
   text-align: center;
   margin-bottom: 30px;
@@ -133,21 +149,18 @@ form button:hover {
 }
 
 .answer-block:hover:not(.disabled):not(.selected) {
-  background-color: #eee;
+  background-color:#000000;
 }
 
 .answer-block.selected {
-  background-color: #dfeeff;
   border-color: #3399ff;
 }
 
 .answer-block.correct {
-  background-color: #c8f7c5;
   border-color: #2ecc71;
 }
 
 .answer-block.wrong {
-  background-color: #f8d7da;
   border-color: #e74c3c;
 }
 
@@ -156,7 +169,7 @@ form button:hover {
   opacity: 0.85;
 }
 
-/* Results Page */
+/* Résultats */
 #score-section {
   text-align: center;
   margin-bottom: 30px;
@@ -200,7 +213,7 @@ form button:hover {
   font-weight: bold;
 }
 
-/* Button (results.html) */
+/* Bouton global */
 button {
   padding: 12px 20px;
   background-color: #007bff;
@@ -215,56 +228,23 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* Loader Styles */
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-}
-
-.loader {
-  display: flex;
-  gap: 10px;
-}
-
-.module {
-  width: 30px;
-  height: 30px;
+/* Bouton de thème */
+#toggle-theme {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
   border-radius: 50%;
-  background-color: #007bff;
-  animation: bounce 1.5s infinite ease-in-out;
+  cursor: pointer;
+  background-color: transparent;
+  color: inherit;
+  transition: transform 0.2s ease;
 }
 
-.module:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.module:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-.module:nth-child(3) {
-  animation-delay: 0.6s;
-}
-
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.loader p {
-  margin-top: 15px;
-  font-size: 18px;
-  color: #333;
+#toggle-theme:hover {
+  transform: scale(1.2);
 }
 
 /* Responsive */
