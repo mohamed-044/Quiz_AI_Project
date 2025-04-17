@@ -37,6 +37,7 @@ app.post('/generate-quiz', async (req, res) => {
   ⚠️ Important :
   - Tu dois absolument me retourner **${questionCount}** objets dans le tableau et non un de plus ou un de moins.
   - Ne pas inclure d'explication.
+  - Les questions doivent être de plus en plus dur mais rester **"${difficulty}"**.
   - Format = JSON brut, sans commentaire ni texte autour.
   
   Commence maintenant :
