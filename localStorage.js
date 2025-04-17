@@ -47,7 +47,6 @@ export const Storage = {
       localStorage.removeItem("quizProgress");
       localStorage.removeItem("quizScore");
       localStorage.removeItem("userAnswers");
-<<<<<<< HEAD
     },
       // 🔹 Save selected language to localStorage
     saveLanguage(language) {
@@ -60,8 +59,4 @@ export const Storage = {
   
     }
 };
-=======
-    }
-  };
->>>>>>> origin/develop
   
