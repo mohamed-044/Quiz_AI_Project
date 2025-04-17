@@ -1,41 +1,46 @@
-import { getQuizData } from './localStorage.js';
+import { Storage } from './localStorage.js';
 
-const quizData = getQuizData();
-if (!quizData || quizData.length === 0) {
-  document.getElementById('question-content').innerText = "Aucune question trouvée.";
-  throw new Error("Aucune donnée de quiz trouvée !");
-}
+// Récupération des données
+const quizData = Storage.getQuiz();
+let currentQuestion = Storage.getProgress();
+let score = Storage.getScore();
 
-let currentIndex = 0;
-const total = quizData.length;
+// Éléments HTML
+const questionEl = document.getElementById("question-content");
+const numberEl = document.getElementById("number");
+const totalEl = document.getElementById("total");
+const answersForm = document.getElementById("answers-form");
+const validateBtn = document.getElementById("validate-btn");
+const skipBtn = document.getElementById("skip-btn");
 
-const questionEl = document.getElementById('question-content');
-const questionNumberEl = document.getElementById('number');
-const totalEl = document.getElementById('total');
-const answersForm = document.getElementById('answers-form');
-
-totalEl.innerText = total;
+// Total des questions
+totalEl.textContent = quizData.length;
 
 let selectedBlock = null;
 
-function renderQuestion(index) {
-  const q = quizData[index];
-  questionEl.innerText = q.question;
-  questionNumberEl.innerText = index + 1;
+// Charger une question
+function loadQuestion() {
+  if (currentQuestion >= quizData.length) {
+    Storage.saveScore(score);
+    window.location.href = "results.html"; // Redirection après le quiz
+    return;
+  }
 
+  const current = quizData[currentQuestion];
+  numberEl.textContent = currentQuestion + 1;
+  questionEl.textContent = current.question;
+  answersForm.innerHTML = "";
   selectedBlock = null;
-  answersForm.innerHTML = '';
 
-  q.choices.forEach((choice, i) => {
-    const block = document.createElement('div');
-    block.classList.add('answer-block');
-    block.setAttribute('data-choice', choice);
-    block.innerText = `${String.fromCharCode(65 + i)}. ${choice}`;
+  current.choices.forEach((choice, index) => {
+    const block = document.createElement("div");
+    block.classList.add("answer-block");
+    block.setAttribute("data-choice", choice);
+    block.innerText = `${String.fromCharCode(65 + index)}. ${choice}`;
 
-    block.addEventListener('click', () => {
-      // Réinitialise la sélection visuelle
-      document.querySelectorAll('.answer-block').forEach(b => b.classList.remove('selected'));
-      block.classList.add('selected');
+    block.addEventListener("click", () => {
+      document.querySelectorAll(".answer-block").forEach(b => b.classList.remove("selected"));
+      block.classList.add("selected");
       selectedBlock = block;
     });
 
@@ -43,52 +48,51 @@ function renderQuestion(index) {
   });
 }
 
-function validateAnswer() {
+// Quand l'utilisateur clique sur "Valider"
+validateBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+
   if (!selectedBlock) {
-    alert("Veuillez choisir une réponse.");
+    alert("Sélectionne une réponse !");
     return;
   }
 
-  const selectedChoice = selectedBlock.getAttribute('data-choice');
-  const correctAnswer = quizData[currentIndex].answer;
+  const userAnswer = selectedBlock.getAttribute("data-choice");
+  const correctAnswer = quizData[currentQuestion].answer;
 
-  // Désactive les clics
-  document.querySelectorAll('.answer-block').forEach(block => {
-    block.classList.add('disabled');
-    const choice = block.getAttribute('data-choice');
+  Storage.saveAnswer(currentQuestion, userAnswer);
 
+  document.querySelectorAll(".answer-block").forEach(block => {
+    block.classList.add("disabled");
+    const choice = block.getAttribute("data-choice");
     if (choice === correctAnswer) {
-      block.classList.add('correct');
+      block.classList.add("correct");
     }
-    if (choice === selectedChoice && choice !== correctAnswer) {
-      block.classList.add('wrong');
+    if (choice === userAnswer && choice !== correctAnswer) {
+      block.classList.add("wrong");
     }
   });
 
-  // Passe à la question suivante après 2 secondes
-  setTimeout(() => {
-    if (currentIndex < total - 1) {
-      currentIndex++;
-      renderQuestion(currentIndex);
-    } else {
-      questionEl.innerText = "Quiz terminé ! 🎉";
-      answersForm.innerHTML = '';
-      document.querySelector('.quiz-buttons').style.display = 'none';
-    }
-  }, 2000);
-}
-
-document.getElementById('validate-btn').addEventListener('click', (e) => {
-  e.preventDefault();
-  validateAnswer();
-});
-
-document.getElementById('skip-btn').addEventListener('click', () => {
-  if (currentIndex < total - 1) {
-    currentIndex++;
-    renderQuestion(currentIndex);
+  if (userAnswer === correctAnswer) {
+    score++;
   }
+
+  currentQuestion++;
+  Storage.saveProgress(currentQuestion);
+  Storage.saveScore(score);
+
+  setTimeout(() => {
+    loadQuestion();
+  }, 2000);
 });
 
-// Premier affichage
-renderQuestion(currentIndex);
+// Bouton "Sauter"
+skipBtn.addEventListener("click", function () {
+  Storage.saveAnswer(currentQuestion, null);
+  currentQuestion++;
+  Storage.saveProgress(currentQuestion);
+  loadQuestion();
+});
+
+// Lancer le quiz
+loadQuestion();

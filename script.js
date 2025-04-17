@@ -1,4 +1,4 @@
-import { saveQuizData } from './localStorage.js';
+import { Storage } from './localStorage.js';
 
 document.getElementById('quiz-form').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -17,7 +17,7 @@ document.getElementById('quiz-form').addEventListener('submit', async function (
     const data = await response.json();
 
     if (!data.quiz) {
-      alert("Erreur lors de la génération du quiz.");
+      alert("❌ Erreur lors de la génération du quiz.");
       return;
     }
 
@@ -26,17 +26,23 @@ document.getElementById('quiz-form').addEventListener('submit', async function (
     try {
       quizArray = JSON.parse(data.quiz);
     } catch (err) {
-      alert("Le quiz n'est pas au format JSON. Vérifie le backend.");
+      console.error("❌ La réponse de l'API n'était pas un JSON valide.");
+      console.log("Contenu brut :", data.quiz);
+      alert("⚠️ Le quiz reçu n'est pas au bon format JSON. Vérifie le backend.");
       return;
     }
 
-    // Sauvegarde dans localStorage
-    saveQuizData(quizArray);
+    // Sauvegarde dans le localStorage via notre module
+    Storage.reset(); // Nettoyage au cas où
+    Storage.saveQuiz(quizArray);
+    Storage.saveProgress(0);
+    Storage.saveScore(0);
 
-    // Redirection vers la page quiz
-    window.location.href = 'quiz.html';
+    // Redirection vers la page du quiz
+    window.location.href = "quiz.html";
 
   } catch (err) {
-    alert(`Erreur de communication avec le serveur. ${err}`);
+    console.error("❌ Erreur de communication avec le serveur :", err);
+    alert(`Erreur de communication avec le serveur. ${err.message}`);
   }
 });

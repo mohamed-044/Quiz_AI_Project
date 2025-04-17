@@ -35,7 +35,7 @@ app.post('/generate-quiz', async (req, res) => {
   }
   
   ⚠️ Important :
-  - Tu dois absolument me retourner **${questionCount}** objets dans le tableau.
+  - Tu dois absolument me retourner **${questionCount}** objets dans le tableau et non un de plus ou un de moins.
   - Ne pas inclure d'explication.
   - Format = JSON brut, sans commentaire ni texte autour.
   
