@@ -1,3 +1,5 @@
+import { saveQuizData } from './localStorage.js';
+
 document.getElementById('quiz-form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -24,26 +26,17 @@ document.getElementById('quiz-form').addEventListener('submit', async function (
     try {
       quizArray = JSON.parse(data.quiz);
     } catch (err) {
-      console.error("❌ La réponse n'était pas un JSON valide.");
-      console.log(data.quiz);
       alert("Le quiz n'est pas au format JSON. Vérifie le backend.");
       return;
     }
 
-    // Affiche simplement les questions et réponses dans la console
-    quizArray.forEach((item, index) => {
-      console.log(`Question ${index + 1}: ${item.question}`);
-      item.choices.forEach((choice, i) => {
-        console.log(`  ${String.fromCharCode(65 + i)}. ${choice}`);
-      });
-      console.log(`Réponse correcte: ${item.answer}`);
-      console.log('-------------------');
-    });
+    // Sauvegarde dans localStorage
+    saveQuizData(quizArray);
 
-    alert("✅ Quiz généré avec succès !");
+    // Redirection vers la page quiz
+    window.location.href = 'quiz.html';
 
   } catch (err) {
-    console.error(err);
     alert(`Erreur de communication avec le serveur. ${err}`);
   }
 });
