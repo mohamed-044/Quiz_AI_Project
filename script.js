@@ -24,6 +24,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
 
     if (!data.quiz) {
       alert("❌ Erreur lors de la génération du quiz.");
+      quizform.style.display = 'block';
       return;
     }
 
@@ -35,6 +36,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
       console.error("❌ La réponse de l'API n'était pas un JSON valide.");
       console.log("Contenu brut :", data.quiz);
       alert("⚠️ Le quiz reçu n'est pas au bon format JSON. Vérifie le backend.");
+      quizform.style.display = 'block';
       return;
     }
 
@@ -50,5 +52,6 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   } catch (err) {
     console.error("❌ Erreur de communication avec le serveur :", err);
     alert(`Erreur de communication avec le serveur. ${err.message}`);
+    quizform.style.display = 'block';
   }
 });
