@@ -238,5 +238,40 @@
     .quiz-buttons button {
       width: 100%;
     }
+    /* Thème clair par défaut : déjà défini */
+
+    /* Thème sombre */
+    .dark-theme {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    .dark-theme main {
+      background-color: #1e1e1e;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .dark-theme input,
+    .dark-theme select,
+    .dark-theme textarea {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+      border: 1px solid #444;
+    }
+
+    .dark-theme .answer-block {
+      background-color: #2a2a2a;
+      border-color: #444;
+    }
+
+    .dark-theme .answer-block:hover:not(.disabled):not(.selected) {
+      background-color: #333;
+    }
+
+    .dark-theme .result-item {
+      background-color: #1b1b1b;
+      border-color: #333;
+    }
+
   }
   
