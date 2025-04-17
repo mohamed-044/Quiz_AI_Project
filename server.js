@@ -39,6 +39,7 @@ app.post('/generate-quiz', async (req, res) => {
   - Ne pas inclure d'explication.
   - Les questions doivent être de plus en plus dur mais rester **"${difficulty}"**.
   - Format = JSON brut, sans commentaire ni texte autour.
+  - Génère le JSON le plus vite possible.
   
   Commence maintenant :
   `;
