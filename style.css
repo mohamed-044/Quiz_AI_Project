@@ -41,7 +41,6 @@ h1 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
-  color: #222;
 }
 
 h2 {
@@ -49,7 +48,7 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Index & Quiz Form */
+/* Formulaires */
 form label {
   font-weight: bold;
   display: block;
@@ -81,12 +80,12 @@ form button:hover {
   background-color: #0056b3;
 }
 
-/* Quiz Layout */
+/* Quiz */
 #question-meta {
   margin-bottom: 10px;
   font-weight: bold;
   font-size: 16px;
-  color: #444;
+
 }
 
 #question-text {
@@ -144,7 +143,6 @@ form button:hover {
   margin: 8px 0;
   border-radius: 8px;
   cursor: pointer;
-  background-color: #f9f9f9;
   transition: background 0.3s ease;
 }
 
@@ -269,4 +267,5 @@ button:hover {
   .quiz-buttons button {
     width: 100%;
   }
+
 }
