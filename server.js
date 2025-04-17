@@ -18,22 +18,29 @@ app.post('/generate-quiz', async (req, res) => {
     return res.status(400).json({ error: 'Champs requis manquants.' });
   }
 
-  const prompt = `
-  Génère un quiz JSON contenant ${questionCount} questions sur le thème "${theme}", difficulté "${difficulty}".
-  Chaque question doit être un objet avec :
-  - "question": le texte de la question
-  - "choices": un tableau avec 4 réponses possibles
-  - "answer": la bonne réponse (le texte exact)
+  if (questionCount > 20) {
+    return res.status(400).json({ error: 'Nombre maximal de questions autorisé : 20.' });
+  }
 
-  Exemple :
-  [
-    {
-      "question": "Quel est le capital de la France ?",
-      "choices": ["Lyon", "Paris", "Marseille", "Toulouse"],
-      "answer": "Paris"
-    }
-  ]
-`;
+  const prompt = `
+  Tu dois me retourner un tableau JSON **strictement valide**, contenant exactement ${questionCount} objets.
+  
+  Chaque objet représente une question du quiz sur le thème **"${theme}"**, niveau **"${difficulty}"**.
+  
+  Structure de chaque objet :
+  {
+    "question": "Texte de la question",
+    "choices": ["Réponse A", "Réponse B", "Réponse C", "Réponse D"],
+    "answer": "Réponse exacte présente dans choices"
+  }
+  
+  ⚠️ Important :
+  - Tu dois absolument me retourner **${questionCount}** objets dans le tableau.
+  - Ne pas inclure d'explication.
+  - Format = JSON brut, sans commentaire ni texte autour.
+  
+  Commence maintenant :
+  `;
 
   try {
     const response = await axios.post(
@@ -42,6 +49,7 @@ app.post('/generate-quiz', async (req, res) => {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
+        max_tokens: 2000
       },
       {
         headers: {
