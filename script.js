@@ -1,7 +1,10 @@
 import { Storage } from './localStorage.js';
 
-document.getElementById('quiz-form').addEventListener('submit', async function (e) {
+document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
+  
+  const loader = document.getElementById('loader');
+  loader.style.display = 'block';
 
   const theme = document.getElementById('theme').value;
   const difficulty = document.getElementById('difficulty').value;
