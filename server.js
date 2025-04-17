@@ -48,7 +48,7 @@ app.post('/generate-quiz', async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 2000
@@ -69,6 +69,47 @@ app.post('/generate-quiz', async (req, res) => {
   }
 });
 
+app.post('/translate', async (req, res) => {
+  console.log('Requête reçue pour traduction');
+  const { text, targetLang } = req.body;
+
+  try {
+    console.log('Début du processus de traduction...');
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-3.5-turbo',
+        messages: [{
+          role: 'user',
+          content: `Traduisez le texte suivant en ${targetLang} tout en préservant les balises HTML et la structure :\n\n${text}`,
+        }],
+        temperature: 0.3,
+        max_tokens: 2000,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log('Réponse de l\'API OpenAI :', response.data);
+
+    const translatedText = response.data.choices[0].message.content;
+
+    res.json({ translated: translatedText });
+  } catch (error) {
+    console.error('Erreur de traduction :', error.response?.data || error.message);
+    
+    if (error.response) {
+      console.error('Réponse d\'erreur de l\'API OpenAI :', error.response.data);
+    }
+
+    res.status(500).json({ error: 'Échec de la traduction du contenu.' });
+  }
+});
+
 app.listen(PORT, () => {
-  console.log(`✅ Serveur backend lancé sur http://localhost:${PORT}`);
+  console.log(`✅ Serveur backend sur : http://localhost:${PORT}`);
 });

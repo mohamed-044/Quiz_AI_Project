@@ -2,6 +2,9 @@ import { Storage } from './localStorage.js';
 
 document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const quizform = document.getElementById("quiz-form");
+  quizform.style.display = 'none';
   
   const loader = document.getElementById('loader');
   loader.style.display = 'block';

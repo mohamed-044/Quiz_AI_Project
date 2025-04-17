@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
+
+  <header>
+    <label for="language">Langage:</label>
+    <input id="language" type="text" placeholder="Entrez votre langage ici">
+    <button id="language-submit">Traduire</button>
+  </header>
+
+  <main id="main-content">
     <h1>Générateur de Quiz IA</h1>
     
     <form id="quiz-form">
@@ -27,11 +34,17 @@
       <button type="submit">Lancer le quiz</button>
     </form>
 
-    <div id="loader" style="display:none; margin-top: 20px;">
-      <p>⏳ Génération du quiz en cours... Veuillez patienter.</p>
+    <div id="loader" class="loader-container" style="display:none; margin-top: 20px;">
+      <div class="loader">
+        <div class="module"></div>
+        <div class="module"></div>
+        <div class="module"></div>
+      </div>
+      <p>Traduction des modules en cours... Veuillez patienter.</p>
     </div>
   </main>
 
+  <script type="module" src="translate.js"></script>
   <script type="module" src="script.js"></script>
 </body>
 </html>

@@ -47,6 +47,16 @@ export const Storage = {
       localStorage.removeItem("quizProgress");
       localStorage.removeItem("quizScore");
       localStorage.removeItem("userAnswers");
+    },
+      // 🔹 Save selected language to localStorage
+    saveLanguage(language) {
+      localStorage.setItem("selectedLanguage", language);
+    },
+
+    // 🔹 Get selected language from localStorage
+    getLanguage() {
+      return localStorage.getItem("selectedLanguage") || "fr";
+  
     }
-  };
+};
   
