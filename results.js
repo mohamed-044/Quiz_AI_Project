@@ -5,6 +5,11 @@ const quizData = Storage.getQuiz();
 const userAnswers = Storage.getAnswers();
 const score = Storage.getScore();
 
+console.log("📊 Affichage des résultats");
+console.log("🧠 Questions :", quizData);
+console.log("📝 Réponses utilisateur :", userAnswers);
+console.log("🎯 Score final :", score);
+
 // Affiche le score final
 const finalScoreEl = document.getElementById("final-score");
 finalScoreEl.textContent = `Votre score : ${score}/${quizData.length}`;
@@ -15,6 +20,10 @@ const resultsListEl = document.getElementById("results-list");
 quizData.forEach((question, index) => {
   const userAnswer = userAnswers[index];
   const correctAnswer = question.answer;
+
+  console.log(`🔎 Q${index + 1}:`, question.question);
+  console.log("👉 Réponse utilisateur :", userAnswer);
+  console.log("✅ Réponse correcte :", correctAnswer);
 
   // Crée un élément pour chaque question et sa correction
   const resultItem = document.createElement("div");

@@ -11,19 +11,24 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Route de health check
+// ✅ Health check
 app.get('/', (req, res) => {
+  console.log("🔍 Requête GET reçue sur / (health check)");
   res.json({ status: 'ok', message: 'Le serveur est en cours d\'exécution' });
 });
 
+// 🚀 Génération du quiz
 app.post('/generate-quiz', async (req, res) => {
   const { theme, difficulty, questionCount } = req.body;
+  console.log("📩 Requête reçue sur /generate-quiz :", req.body);
 
   if (!theme || !difficulty || !questionCount) {
+    console.warn("⚠️ Champs requis manquants");
     return res.status(400).json({ error: 'Champs requis manquants.' });
   }
 
   if (questionCount > 20) {
+    console.warn("⚠️ Nombre de questions demandé trop élevé :", questionCount);
     return res.status(400).json({ error: 'Nombre maximal de questions autorisé : 20.' });
   }
 
@@ -50,6 +55,7 @@ app.post('/generate-quiz', async (req, res) => {
   `;
 
   try {
+    console.log("🧠 Envoi du prompt à OpenAI...");
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -67,19 +73,23 @@ app.post('/generate-quiz', async (req, res) => {
     );
 
     const quizText = response.data.choices[0].message.content;
+    console.log("✅ Quiz généré avec succès !");
     res.json({ quiz: quizText });
+
   } catch (error) {
-    console.error('Erreur API OpenAI :', error.response?.data || error.message);
+    console.error('❌ Erreur API OpenAI :', error.response?.data || error.message);
     res.status(500).json({ error: 'Erreur lors de la génération du quiz.' });
   }
 });
 
+// 🌍 Traduction de la page
 app.post('/translate', async (req, res) => {
-  console.log('Requête reçue pour traduction');
+  console.log('🌐 Requête reçue pour traduction');
   const { text, targetLang } = req.body;
+  console.log("🔠 Langue cible :", targetLang);
 
   try {
-    console.log('Début du processus de traduction...');
+    console.log('💬 Envoi du texte à l\'API OpenAI pour traduction...');
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -99,22 +109,17 @@ app.post('/translate', async (req, res) => {
       }
     );
 
-    console.log('Réponse de l\'API OpenAI :', response.data);
-
+    console.log('✅ Traduction terminée !');
     const translatedText = response.data.choices[0].message.content;
-
     res.json({ translated: translatedText });
-  } catch (error) {
-    console.error('Erreur de traduction :', error.response?.data || error.message);
-    
-    if (error.response) {
-      console.error('Réponse d\'erreur de l\'API OpenAI :', error.response.data);
-    }
 
+  } catch (error) {
+    console.error('❌ Erreur de traduction :', error.response?.data || error.message);
     res.status(500).json({ error: 'Échec de la traduction du contenu.' });
   }
 });
 
+// 🚀 Lancement du serveur
 app.listen(PORT, () => {
-  console.log(`✅ Serveur backend sur : http://localhost:${PORT}`);
+  console.log(`✅ Serveur backend en ligne sur : http://localhost:${PORT}`);
 });

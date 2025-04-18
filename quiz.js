@@ -5,6 +5,11 @@ const quizData = Storage.getQuiz();
 let currentQuestion = Storage.getProgress();
 let score = Storage.getScore();
 
+console.log("🎮 Démarrage du quiz");
+console.log("📦 Données quiz récupérées :", quizData);
+console.log("▶️ Question actuelle :", currentQuestion);
+console.log("⭐ Score actuel :", score);
+
 // Éléments HTML
 const questionEl = document.getElementById("question-content");
 const numberEl = document.getElementById("number");
@@ -20,9 +25,12 @@ let selectedBlock = null;
 
 // Charger une question
 function loadQuestion() {
+  console.log("📥 Chargement de la question n°", currentQuestion + 1);
+
   if (currentQuestion >= quizData.length) {
+    console.log("✅ Quiz terminé. Score final :", score);
     Storage.saveScore(score);
-    window.location.href = "results.html"; // Redirection après le quiz
+    window.location.href = "results.html";
     return;
   }
 
@@ -39,6 +47,7 @@ function loadQuestion() {
     block.innerText = `${String.fromCharCode(65 + index)}. ${choice}`;
 
     block.addEventListener("click", () => {
+      console.log("🖱️ Réponse sélectionnée :", choice);
       document.querySelectorAll(".answer-block").forEach(b => b.classList.remove("selected"));
       block.classList.add("selected");
       selectedBlock = block;
@@ -60,6 +69,9 @@ validateBtn.addEventListener("click", function (e) {
   const userAnswer = selectedBlock.getAttribute("data-choice");
   const correctAnswer = quizData[currentQuestion].answer;
 
+  console.log("📌 Réponse utilisateur :", userAnswer);
+  console.log("✅ Bonne réponse :", correctAnswer);
+
   Storage.saveAnswer(currentQuestion, userAnswer);
 
   document.querySelectorAll(".answer-block").forEach(block => {
@@ -75,6 +87,9 @@ validateBtn.addEventListener("click", function (e) {
 
   if (userAnswer === correctAnswer) {
     score++;
+    console.log("🎉 Bonne réponse ! Score +1 →", score);
+  } else {
+    console.log("❌ Mauvaise réponse.");
   }
 
   currentQuestion++;
@@ -88,6 +103,7 @@ validateBtn.addEventListener("click", function (e) {
 
 // Bouton "Sauter"
 skipBtn.addEventListener("click", function () {
+  console.log("⏭️ Question sautée.");
   Storage.saveAnswer(currentQuestion, null);
   currentQuestion++;
   Storage.saveProgress(currentQuestion);

@@ -2,27 +2,37 @@ const translateButton = document.getElementById("language-submit");
 const loader = document.getElementById("loader");
 const quizform = document.getElementById("quiz-form");
 
+console.log("📦 Script de traduction chargé.");
+
 const storedLanguage = localStorage.getItem("selectedLanguage");
 if (storedLanguage) {
-  document.getElementById("language").value = storedLanguage; // Pre-fill the input with the saved language
+  document.getElementById("language").value = storedLanguage;
+  console.log(`🌍 Langue préremplie depuis localStorage : ${storedLanguage}`);
 }
 
-translateButton.addEventListener("click", async function () {
+translateButton.addEventListener("click", async function (event) {
+  event.preventDefault();
+
   const language = document.getElementById("language").value.trim().toLowerCase();
+  console.log(`🖱️ Bouton cliqué. Langue demandée : ${language}`);
 
   if (!language) {
-    alert("Please enter a valid language!");
+    alert("Veuillez entrer une langue valide !");
+    console.warn("⚠️ Aucune langue renseignée.");
     return;
   }
 
   localStorage.setItem("selectedLanguage", language);
+  console.log(`💾 Langue enregistrée dans localStorage : ${language}`);
 
-  quizform.style.display = "none";
   loader.style.display = "block";
+  console.log("⏳ loader affiché.");
 
   const htmlContent = document.body.innerHTML;
+  console.log("📄 Contenu complet de <body> extrait pour traduction.");
 
   try {
+    console.log("🚀 Envoi du contenu au serveur pour traduction...");
     const response = await fetch("http://localhost:3000/translate", {
       method: "POST",
       headers: {
@@ -34,37 +44,41 @@ translateButton.addEventListener("click", async function () {
       }),
     });
 
-    // Check if the response status is OK (200)
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`Erreur HTTP ! Statut : ${response.status}`);
     }
 
-    // Check if the response is JSON
-    const contentType = response.headers.get("Content-Type");
-    console.log("Content-Type:", contentType);
+    const data = await response.json();
+    console.log("✅ Réponse JSON reçue :", data);
 
-    // Log the response body to check what the server is returning
-    const responseText = await response.text();  // Get the response as text
-    console.log("Response Text:", responseText);  // Log for troubleshooting
+    if (data.translated) {
+      const parser = new DOMParser();
+      const translatedDoc = parser.parseFromString(data.translated, "text/html");
 
-    // Check if the response is JSON
-    if (contentType && contentType.includes("application/json")) {
-      const data = JSON.parse(responseText);  // Parse response explicitly
-
-      if (data.translated) {
-        // If the translation was successful, replace the page's content with the translated HTML
-        document.body.innerHTML = data.translated;
-      } else {
-        alert("Translation failed. Please try again.");
+      const translatedBody = translatedDoc.body;
+      if (!translatedBody) {
+        throw new Error("Impossible de parser le contenu traduit.");
       }
+
+      document.body.innerHTML = translatedBody.innerHTML;
+      console.log("🌍 Contenu de <body> remplacé avec le HTML traduit.");
     } else {
-      alert(`Unexpected response format. Expected JSON. Response was: ${responseText}`);
+      console.error("❌ Donnée 'translated' absente dans la réponse JSON.");
+      alert("La traduction a échoué. Veuillez réessayer.");
     }
+
   } catch (error) {
-    console.error("Error during translation:", error);
-    alert(`An error occurred while translating the page: ${error.message}`);
-  } finally {
-    loader.style.display = "none";
-    quizform.style.display = "block";
+    console.error("❌ Erreur pendant la traduction :", error);
+    alert(`Erreur lors de la traduction : ${error.message}`);
+
+  } 
+  finally 
+  {
+    setTimeout(() => {
+      loader.style.display = "none";
+      console.log("⏳ Loader caché.");
+    }, 500);
+    console.log("🔚 Fin du processus.");
   }
+
 });
