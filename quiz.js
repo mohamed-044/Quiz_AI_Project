@@ -12,11 +12,43 @@ const totalEl = document.getElementById("total");
 const answersForm = document.getElementById("answers-form");
 const validateBtn = document.getElementById("validate-btn");
 const skipBtn = document.getElementById("skip-btn");
+const timerEl = document.getElementById("timer");
+const progressBarContainer = document.getElementById("progress-bar-container");
+const progressBarFill = document.getElementById("progress-bar-fill");
+const timeLeftEl = document.getElementById("time-left");
 
 // Total des questions
 totalEl.textContent = quizData.length;
 
 let selectedBlock = null;
+let timerInterval;
+let timerDuration = 15; // Durée du minuteur en secondes
+
+// Fonction pour démarrer le minuteur
+function startTimer() {
+  timerEl.style.display = "block";
+  progressBarContainer.style.display = "block";
+  let timeRemaining = timerDuration;
+
+  // Mise à jour du minuteur
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    timeLeftEl.textContent = timeRemaining;
+    progressBarFill.style.width = `${(timeRemaining / timerDuration) * 100}%`;
+
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      playAlert();
+      loadNextQuestion();
+    }
+  }, 1000);
+}
+
+// Fonction pour jouer un son d'alerte quand le temps est écoulé
+function playAlert() {
+  const alertSound = new Audio('alert-sound.mp3'); // Remplacez par le chemin de votre fichier audio
+  alertSound.play();
+}
 
 // Charger une question
 function loadQuestion() {
@@ -46,6 +78,27 @@ function loadQuestion() {
 
     answersForm.appendChild(block);
   });
+
+  startTimer(); // Lancer le minuteur quand la question est chargée
+}
+
+// Fonction pour charger la prochaine question ou terminer le quiz
+function loadNextQuestion() {
+  Storage.saveAnswer(currentQuestion, selectedBlock ? selectedBlock.getAttribute("data-choice") : null);
+  const userAnswer = selectedBlock ? selectedBlock.getAttribute("data-choice") : null;
+  const correctAnswer = quizData[currentQuestion].answer;
+
+  if (userAnswer === correctAnswer) {
+    score++;
+  }
+
+  currentQuestion++;
+  Storage.saveProgress(currentQuestion);
+  Storage.saveScore(score);
+
+  setTimeout(() => {
+    loadQuestion();
+  }, 2000);
 }
 
 // Quand l'utilisateur clique sur "Valider"

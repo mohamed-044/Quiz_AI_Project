@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main>
     <h1>QUIZ</h1>
 
     <section id="quiz-container">
- 
       <div id="question-meta">
-        <span id="question">
-          Question
-        </span>
+        <span id="question">Question</span>
         <span id="question-number">
           <span id="number">1</span>
           <span id="separator">/</span>
@@ -23,12 +20,24 @@
         </span>
       </div>
 
+      <!-- 🕒 Minuteur -->
+      <div id="timer" style="display: none; font-weight: bold; margin-bottom: 10px;">
+        Temps restant : <span id="time-left">15</span> sec
+      </div>
+
+      <!-- Barre de progression -->
+      <div id="progress-bar-container" style="display: none;">
+        <div id="progress-bar" style="width: 100%; background-color: #f1f1f1;">
+          <div id="progress-bar-fill" style="background-color: green; height: 10px;"></div>
+        </div>
+      </div>
+
       <div id="question-text">
         <p id="question-content">Chargement de la question...</p>
       </div>
 
       <form id="answers-form">
-        <!-- Les propositions de réponse seront insérées ici dynamiquement -->
+        <!-- Réponses générées dynamiquement -->
       </form>
 
       <div class="quiz-buttons">
@@ -42,6 +51,4 @@
   <button id="toggle-theme"></button>
   <script src="theme.js"></script>
 </body>
-
-
 </html>
