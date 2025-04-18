@@ -52,9 +52,12 @@ function playAlert() {
 
 // Charger une question
 function loadQuestion() {
+  clearInterval(timerInterval); // 🔴 Ajout important ici
+  timeLeftEl.textContent = timerDuration;
+  progressBarFill.style.width = "100%";
   if (currentQuestion >= quizData.length) {
     Storage.saveScore(score);
-    window.location.href = "results.html"; // Redirection après le quiz
+    window.location.href = "results.html";
     return;
   }
 
@@ -79,7 +82,7 @@ function loadQuestion() {
     answersForm.appendChild(block);
   });
 
-  startTimer(); // Lancer le minuteur quand la question est chargée
+  startTimer(); // (re)Démarrage du timer
 }
 
 // Fonction pour charger la prochaine question ou terminer le quiz
