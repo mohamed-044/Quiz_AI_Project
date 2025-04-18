@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
+
+  <header style="display: none;">
+    <label for="language">Langage:</label>
+    <input id="language" type="text" placeholder="Entrez votre langage ici">
+    <button id="language-submit">Traduire</button>
+  </header>
+  <main id="main-content">
+    <button id="toggle-theme" style="float: right; margin-bottom: 10px;"></button>
     <h1>Générateur de Quiz IA</h1>
     
     <form id="quiz-form">
@@ -24,10 +31,31 @@
       <label for="questionCount">Nombre de questions :</label><br>
       <input type="number" id="questionCount" name="questionCount" min="1" max="20" value="10" required><br><br>
 
-      <button type="submit">Lancer le quiz</button>
+      <form id="settings-form">
+  <label>
+    <input type="checkbox" id="timer-toggle">
+    Activer le minuteur par question
+  </label>
+  <button type="submit" id="start-quiz">Lancer le quiz</button>
+  <button type="submit" id="start-rush">Rush hour</button>
+
+</form>
+
     </form>
+
+    <div id="loader" class="loader-container" style="display:none; margin-top: 20px;">
+      <div class="loader">
+        <div class="module"></div>
+        <div class="module"></div>
+        <div class="module"></div>
+      </div>
+      <p>Chargement des modules en cours... Veuillez patienter.</p>
+    </div>
   </main>
 
-  <script src="script.js"></script>
+  <script type="module" src="translate.js"></script>
+  <script type="module" src="script.js"></script>
+  <script src="theme.js"></script>
 </body>
+
 </html>
