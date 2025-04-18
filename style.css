@@ -147,7 +147,7 @@ form button:hover {
 }
 
 .answer-block:hover:not(.disabled):not(.selected) {
-  background-color:#000000;
+  border-color: #3399ff;
 }
 
 .answer-block.selected {
