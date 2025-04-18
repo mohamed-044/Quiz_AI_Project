@@ -107,6 +107,7 @@ function loadNextQuestion() {
 // Quand l'utilisateur clique sur "Valider"
 validateBtn.addEventListener("click", function (e) {
   e.preventDefault();
+  clearInterval(timerInterval); // ⏹ Stoppe le chrono à la validation
 
   if (!selectedBlock) {
     alert("Sélectionne une réponse !");
