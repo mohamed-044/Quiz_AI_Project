@@ -85,10 +85,10 @@ form button:hover {
   margin-bottom: 10px;
   font-weight: bold;
   font-size: 16px;
-
 }
 
 #question-text {
+  margin-top: 20px; /* Ajouté pour espacer le texte de la question */
   margin-bottom: 20px;
   font-size: 18px;
 }
@@ -107,10 +107,32 @@ form button:hover {
   font-size: 16px;
 }
 
+/* Section minuteur */
+#timer {
+  margin-bottom: 20px; /* Ajouté pour espacer le minuteur de la question */
+  font-weight: bold;
+}
+
+#progress-bar-container {
+  display: none;
+  margin-bottom: 10px; /* Ajouté pour espacer la barre de progression */
+}
+
+/* Espacement entre "Activer le minuteur" et "Lancer le quiz" */
+#timer-container {
+  margin-bottom: 20px; /* Ajouté pour espacer "Activer le minuteur" du bouton "Lancer" */
+}
+
+/* Lien entre bouton et minuteur */
+form button[type="submit"] {
+  margin-top: 20px; /* Ajouté pour espacer le bouton "Lancer" du reste */
+}
+
 .quiz-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  margin-top: 20px; /* Ajouté pour espacer les boutons */
 }
 
 .quiz-buttons button {
@@ -267,5 +289,4 @@ button:hover {
   .quiz-buttons button {
     width: 100%;
   }
-
 }
