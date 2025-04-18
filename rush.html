@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Rush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>RUSH QUIZ ⏱️</h1>
+
+    <section id="quiz-container">
+      <div id="rush-meta">
+        <div id="question-meta">
+          <span id="question">Question</span>
+          <span id="question-number">
+            <span id="number">1</span>
+            <span id="separator">/</span>
+            <span id="total">10</span>
+          </span>
+        </div>
+        <div id="timer-container">
+          ⏳ Temps restant : <span id="timer">60</span>s
+        </div>
+      </div>
+
+      <div id="question-text">
+        <p id="question-content">Chargement de la question...</p>
+      </div>
+
+      <form id="answers-form">
+        <!-- Les propositions de réponse seront insérées ici dynamiquement -->
+      </form>
+
+      <div class="quiz-buttons">
+        <button id="skip-btn" type="button">Sauter la question</button>
+        <button id="validate-btn" type="submit">Valider</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="rush.js"></script>
+</body>
+</html>

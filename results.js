@@ -1,42 +1,45 @@
-import { Storage } from './localStorage.js';
+import { Storage } from "./localStorage.js";
 
-// Récupère les données du quiz et des réponses
-const quizData = Storage.getQuiz();
-const userAnswers = Storage.getAnswers();
+const mode = localStorage.getItem("lastMode"); // "classic" ou "rush"
 const score = Storage.getScore();
+const answers = Storage.getAnswers();
+const questions = Storage.getQuiz();
 
-// Affiche le score final
-const finalScoreEl = document.getElementById("final-score");
-finalScoreEl.textContent = `Votre score : ${score}/${quizData.length}`;
+const container = document.getElementById("results-container");
+const title = document.getElementById("results-title");
 
-// Affiche les corrections (question par question)
-const resultsListEl = document.getElementById("results-list");
+// Définir le titre en fonction du mode de jeu
+if (mode === "classic") {
+  title.textContent = "Résultats du mode Classique";
+} else if (mode === "rush") {
+  title.textContent = "Résultats du mode Rush";
+} else {
+  title.textContent = "Résultats";
+}
 
-quizData.forEach((question, index) => {
-  const userAnswer = userAnswers[index];
-  const correctAnswer = question.answer;
+// Affichage du score et des statistiques de base
+container.innerHTML = `
+  <p id="final-score"><strong>Score :</strong> ${score}</p>
+  <p id="answers-count"><strong>Réponses données :</strong> ${answers.length}</p>
+  <p id="questions-total"><strong>Total de questions :</strong> ${questions.length}</p>
+`;
 
-  // Crée un élément pour chaque question et sa correction
-  const resultItem = document.createElement("div");
-  resultItem.classList.add("result-item");
+// 💡 Bonus : liste détaillée des questions et des réponses
+const detailedList = document.createElement("ol");
+detailedList.id = "results-list";
 
-  const questionEl = document.createElement("p");
-  questionEl.innerHTML = `<strong>Q${index + 1} :</strong> ${question.question}`;
+questions.forEach((q, i) => {
+  const userAnswer = answers[i] ?? "Aucune réponse";
+  const isCorrect = userAnswer === q.answer;
 
-  const answerEl = document.createElement("p");
-  answerEl.innerHTML = `<strong>Votre réponse :</strong> ${userAnswer ? userAnswer : 'Aucune réponse'}`;
-
-  const correctionEl = document.createElement("p");
-  if (userAnswer === correctAnswer) {
-    correctionEl.innerHTML = `<span style="color: green;">Correct !</span>`;
-  } else {
-    correctionEl.innerHTML = `<span style="color: red;">Incorrect !</span><br><strong>Réponse correcte :</strong> ${correctAnswer}`;
-  }
-
-  // Ajoute les éléments au conteneur des résultats
-  resultItem.appendChild(questionEl);
-  resultItem.appendChild(answerEl);
-  resultItem.appendChild(correctionEl);
-
-  resultsListEl.appendChild(resultItem);
+  const item = document.createElement("li");
+  item.classList.add("result-item");
+  item.innerHTML = `
+    <p class="question-text"><strong>${q.question}</strong></p>
+    <p>➤ Ta réponse : <span class="${isCorrect ? 'correct-answer' : 'wrong-answer'}">${userAnswer}</span></p>
+    <p>✅ Bonne réponse : <span class="correct-answer">${q.answer}</span></p>
+  `;
+  detailedList.appendChild(item);
 });
+
+container.appendChild(detailedList);

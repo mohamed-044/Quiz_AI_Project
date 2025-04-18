@@ -152,4 +152,5 @@ skipBtn.addEventListener("click", function () {
 });
 
 // Lancer le quiz
+localStorage.setItem("lastMode", "classic");
 loadQuestion();
