@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz IA - Accueil</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Images IA</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main>
+    <h1>Quiz - Trouve l'image</h1>
 
-  <header style="display: none;">
-    <label for="language">Langage:</label>
-    <input id="language" type="text" placeholder="Entrez votre langage ici">
-    <button id="language-submit">Traduire</button>
-  </header>
-  <main id="main-content">
-    <button id="toggle-theme" style="float: right; margin-bottom: 10px;"></button>
-    <h1>Générateur de Quiz IA</h1>
+    <!-- Affichage du numéro de la question et du total -->
+    <div id="question-meta">
+      Question <span id="number">1</span> / <span id="total">1</span>
+    </div>
+
+    <!-- Texte de la question -->
+    <div id="question-text">
+      <p id="question-content">Chargement de la question...</p>
+    </div>
+
+    <!-- Zone pour l'image correcte -->
+    <div id="correct-image" class="image-container">
+      <h3>Image correcte</h3>
+      <img id="correct-img" src="" alt="Image correcte" style="max-width: 100%; height: auto;" />
+    </div>
     
-    <form id="quiz-form">
-      <label for="theme">Thème du quiz :</label><br>
-      <input type="text" id="theme" name="theme" placeholder="Ex : Histoire, Science..." required><br><br>
-
-      <label for="difficulty">Difficulté :</label><br>
-      <select id="difficulty" name="difficulty" required>
-        <option value="facile">Facile</option>
-        <option value="moyen">Moyen</option>
-        <option value="difficile">Difficile</option>
-      </select><br><br>
-
-      <label for="questionCount">Nombre de questions :</label><br>
-      <input type="number" id="questionCount" name="questionCount" min="1" max="20" value="10" required><br><br>
-
-      <form id="settings-form">
-  <label>
-    <input type="checkbox" id="timer-toggle">
-    Activer le minuteur par question
-  </label>
-  <button type="submit">Commencer le quiz</button>
-</form>
-
-    </form>
-
-    <div id="loader" class="loader-container" style="display:none; margin-top: 20px;">
-      <div class="loader">
-        <div class="module"></div>
-        <div class="module"></div>
-        <div class="module"></div>
+    <!-- Zone pour les images distracteurs -->
+    <div id="distractor-images" class="image-container">
+      <h3>Images distracteurs</h3>
+      <div id="distractor-1">
+        <img id="distractor-img-1" src="" alt="Distracteur 1" style="max-width: 100%; height: auto;" />
       </div>
-      <p>Chargement des modules en cours... Veuillez patienter.</p>
+      <div id="distractor-2">
+        <img id="distractor-img-2" src="" alt="Distracteur 2" style="max-width: 100%; height: auto;" />
+      </div>
+      <div id="distractor-3">
+        <img id="distractor-img-3" src="" alt="Distracteur 3" style="max-width: 100%; height: auto;" />
+      </div>
+    </div>
+
+    <!-- Section des boutons de l'utilisateur -->
+    <div class="quiz-buttons">
+      <button id="validate-btn">Valider</button>
+      <button id="skip-btn">Sauter</button>
     </div>
   </main>
 
-  <script type="module" src="translate.js"></script>
-  <script type="module" src="script.js"></script>
-  <script src="theme.js"></script>
+  <script type="module" src="quizImage.js"></script>
 </body>
-
 </html>

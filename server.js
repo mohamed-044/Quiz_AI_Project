@@ -8,6 +8,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+// Middleware pour les requêtes CORS et traitement du JSON
 app.use(cors());
 app.use(express.json());
 
@@ -16,9 +17,11 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'Le serveur est en cours d\'exécution' });
 });
 
+// Route pour générer un quiz
 app.post('/generate-quiz', async (req, res) => {
   const { theme, difficulty, questionCount } = req.body;
 
+  // Validation des données
   if (!theme || !difficulty || !questionCount) {
     return res.status(400).json({ error: 'Champs requis manquants.' });
   }
@@ -74,47 +77,68 @@ app.post('/generate-quiz', async (req, res) => {
   }
 });
 
-app.post('/translate', async (req, res) => {
-  console.log('Requête reçue pour traduction');
-  const { text, targetLang } = req.body;
+// Route pour générer des images via OpenAI
+app.post('/api/generate-images', async (req, res) => {
+  const { correctPrompt, distractorPrompts } = req.body;
+
+  // Validation des données
+  if (!correctPrompt || !distractorPrompts || distractorPrompts.length !== 3) {
+    return res.status(400).json({ error: 'Champs requis manquants ou incorrects.' });
+  }
 
   try {
-    console.log('Début du processus de traduction...');
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+    // Générer l'image correcte
+    const correctImageResponse = await axios.post(
+      'https://api.openai.com/v1/images/generations',
       {
-        model: 'gpt-3.5-turbo',
-        messages: [{
-          role: 'user',
-          content: `Traduisez le texte suivant en ${targetLang} tout en préservant les balises HTML et la structure :\n\n${text}`,
-        }],
-        temperature: 0.3,
-        max_tokens: 2000,
+        prompt: correctPrompt,
+        n: 1,
+        size: '512x512',
       },
       {
         headers: {
           'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       }
     );
+    console.log('Réponse image correcte:', correctImageResponse.data);
 
-    console.log('Réponse de l\'API OpenAI :', response.data);
+    const correctImageUrl = correctImageResponse.data.data[0].url;
 
-    const translatedText = response.data.choices[0].message.content;
-
-    res.json({ translated: translatedText });
-  } catch (error) {
-    console.error('Erreur de traduction :', error.response?.data || error.message);
-    
-    if (error.response) {
-      console.error('Réponse d\'erreur de l\'API OpenAI :', error.response.data);
+    // Générer les images distracteurs
+    const distractorImageUrls = [];
+    for (const prompt of distractorPrompts) {
+      const distractorImageResponse = await axios.post(
+        'https://api.openai.com/v1/images/generations',
+        {
+          prompt: prompt,
+          n: 1,
+          size: '512x512',
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log('Réponse image distracteur:', distractorImageResponse.data);
+      distractorImageUrls.push(distractorImageResponse.data.data[0].url);
     }
 
-    res.status(500).json({ error: 'Échec de la traduction du contenu.' });
+    // Répondre avec les URLs des images générées
+    res.json({
+      correctImageUrl,
+      distractorImageUrls
+    });
+  } catch (error) {
+    console.error('Erreur lors de la génération des images :', error.response?.data || error.message);
+    res.status(500).json({ error: 'Erreur lors de la génération des images.' });
   }
 });
 
+// Lancer le serveur
 app.listen(PORT, () => {
   console.log(`✅ Serveur backend sur : http://localhost:${PORT}`);
 });

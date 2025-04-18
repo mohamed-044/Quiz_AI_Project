@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Images IA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Quiz - Trouve l'image</h1>
+
+    <div id="question-meta">
+      Question <span id="number">1</span> / <span id="total">1</span>
+    </div>
+
+    <div id="question-text">
+      <p id="question-content">Chargement de la question...</p>
+    </div>
+
+    <div id="images-container"></div>
+
+    <!-- Formulaire pour sélectionner les réponses -->
+    <form id="answersForm">
+      <label>
+        <input type="radio" name="answer" value="A"> Réponse A
+      </label>
+      <label>
+        <input type="radio" name="answer" value="B"> Réponse B
+      </label>
+      <label>
+        <input type="radio" name="answer" value="C"> Réponse C
+      </label>
+      <label>
+        <input type="radio" name="answer" value="D"> Réponse D
+      </label>
+    </form>
+
+    <div class="quiz-buttons">
+      <button id="validate-btn">Valider</button>
+      <button id="skip-btn">Sauter</button>
+    </div>
+  </main>
+
+  <script type="module" src="quizImage.js"></script>
+</body>
+</html>
