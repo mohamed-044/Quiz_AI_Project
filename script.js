@@ -27,7 +27,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   const endpoint = trigger === "start-rush" ? 'generate-rush' : 'generate-quiz';
 
   try {
-    const response = await fetch(`http://localhost:3000/${endpoint}`, {
+    const response = await fetch(`https://quiz-ai-wmya.onrender.com/${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ theme, difficulty, questionCount })
