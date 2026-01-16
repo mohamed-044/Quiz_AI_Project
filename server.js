@@ -54,10 +54,11 @@ app.post('/generate-rush', async (req, res) => {
 
   try {
     console.log('🧠 Envoi du prompt rush à OpenAI...');
+    console.log("Clé API chargée :", process.env.OPENAI_API_KEY ? "OK" : "ABSENTE");
     const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: 'llama-3.1-8b-instant',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 2000
@@ -72,9 +73,10 @@ app.post('/generate-rush', async (req, res) => {
     console.log('✅ Réponse reçue de GPT pour le rush.');
     const quizText = response.data.choices[0].message.content;
     res.json({ quiz: quizText });
-  } catch (error) {
-    console.error('❌ Erreur API OpenAI :', error.response?.data || error.message);
-    res.status(500).json({ error: 'Erreur lors de la génération du rush.' });
+ } catch (error) {
+  console.error("❌ Erreur API complète :", error.response?.data || error.message || error);
+  return res.status(500).json({ error: error.response?.data || error.message });
+
   }
 });
 
@@ -117,10 +119,11 @@ app.post('/generate-quiz', async (req, res) => {
 
   try {
     console.log('🧠 Envoi du prompt quiz à OpenAI...');
+    console.log("Clé API chargée :", process.env.OPENAI_API_KEY ? "OK" : "ABSENTE");
     const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: 'llama-3.1-8b-instant',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 2000
@@ -137,9 +140,12 @@ app.post('/generate-quiz', async (req, res) => {
     const quizText = response.data.choices[0].message.content;
     res.json({ quiz: quizText });
   } catch (error) {
-    console.error('❌ Erreur API OpenAI :', error.response?.data || error.message);
-    res.status(500).json({ error: 'Erreur lors de la génération du quiz.' });
-  }
+  console.error("❌ Erreur API complète :", error.response?.data || error.message || error);
+  return res.status(500).json({ error: error.response?.data || error.message });
+}
+
+
+  
 });
 
 app.post('/translate', async (req, res) => {
@@ -149,10 +155,11 @@ app.post('/translate', async (req, res) => {
 
   try {
     console.log('🌍 Début du processus de traduction...');
+    console.log("Clé API chargée :", process.env.OPENAI_API_KEY ? "OK" : "ABSENTE");
     const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: 'llama-3.1-8b-instant',
         messages: [{
           role: 'user',
           content: `Traduisez le texte suivant en ${targetLang} tout en préservant les balises HTML et la structure :\n\n${text}`,
@@ -172,15 +179,17 @@ app.post('/translate', async (req, res) => {
     const translatedText = response.data.choices[0].message.content;
 
     res.json({ translated: translatedText });
-  } catch (error) {
-    console.error('❌ Erreur de traduction :', error.response?.data || error.message);
+  }  catch (error) {
+  console.error("❌ Erreur API complète :", error.response?.data || error.message || error);
+  return res.status(500).json({ error: error.response?.data || error.message });
+}
+
     
     if (error.response) {
       console.error('📉 Réponse d\'erreur OpenAI :', error.response.data);
     }
 
-    res.status(500).json({ error: 'Échec de la traduction du contenu.' });
-  }
+
 });
 
 app.listen(PORT, () => {
